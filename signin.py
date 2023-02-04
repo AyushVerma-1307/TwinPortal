@@ -1,7 +1,9 @@
 from tkinter import *
 from PIL import ImageTk
 # Functionality Part
-
+def signup_page():
+    login_window.destroy()
+    import signup
 def user_enter(event):
     if usernameEntry.get()=='Username':
         usernameEntry.delete(0,END)
@@ -85,6 +87,6 @@ twitterlabel.place(x=740,y=440)
 signupLabel=Label(login_window,text='Dont Have an Account?',font=('Open Sans',9,'bold'),fg='firebrick',bg='white')
 signupLabel.place(x=590,y=500)
 
-newaccountButton=Button(login_window,text='Create New One',font=('Open Sans',9,'bold underline'),fg='blue',bg='white',activeforeground='blue',activebackground='firebrick1',cursor='hand2',bd=0)
+newaccountButton=Button(login_window,text='Create New One',font=('Open Sans',9,'bold underline'),fg='blue',bg='white',activeforeground='blue',activebackground='firebrick1',cursor='hand2',bd=0,command=signup_page)
 newaccountButton.place(x=727,y=500)
 login_window.mainloop()
