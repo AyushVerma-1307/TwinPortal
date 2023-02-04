@@ -94,7 +94,7 @@ passwordLabel=Label(frame,text='Password',font=('Microsoft Yahei Ui Light',10
         ,'bold'),bg='white',fg='firebrick1')
 passwordLabel.grid(row=5,column=0,sticky='w',padx=25,pady=(10,0))
 
-passwordEntry=Entry(frame,width=25,font=('Microsoft Yahei Ui Light',10
+passwordEntry=Entry(frame,width=30,font=('Microsoft Yahei Ui Light',10
         ,'bold'),bg='firebrick1',fg='white')
 passwordEntry.grid(row=6,column=0,sticky='w',padx=25)
 
@@ -102,7 +102,7 @@ confirmLabel=Label(frame,text='Confirm Password',font=('Microsoft Yahei Ui Light
         ,'bold'),bg='white',fg='firebrick1')
 confirmLabel.grid(row=7,column=0,sticky='w',padx=25,pady=(10,0))
 
-confirmEntry=Entry(frame,width=25,font=('Microsoft Yahei Ui Light',10
+confirmEntry=Entry(frame,width=30,font=('Microsoft Yahei Ui Light',10
         ,'bold'),bg='firebrick1',fg='white')
 confirmEntry.grid(row=8,column=0,sticky='w',padx=25)
 
