@@ -40,14 +40,21 @@ def  connect_database():
                 except:
                         mycursor.execute('use userdata')
 
-                query='insert into data(email,username,password) values(%s,%s,%s)'
-                mycursor.execute(query,(emailEntry.get(),usernameEntry.get(),passwordEntry.get()))
-                con.commit()
-                con.close()
-                messagebox.showinfo('Success','Registration is Successful')
-                clear()
-                signup_window.destroy()
-                import signin        
+                query='select * from data where username=%s'
+                mycursor.execute(query,(usernameEntry.get()))
+                
+                row=mycursor.fetchone()
+                if row != None:
+                        messagebox.showerror('Error','Username Already Exists')
+                else:
+                        query='insert into data(email,username,password) values(%s,%s,%s)'
+                        mycursor.execute(query,(emailEntry.get(),usernameEntry.get(),passwordEntry.get()))
+                        con.commit()
+                        con.close()
+                        messagebox.showinfo('Success','Registration is Successful')
+                        clear()
+                        signup_window.destroy()
+                        import signin  
 
 signup_window=Tk()
 
