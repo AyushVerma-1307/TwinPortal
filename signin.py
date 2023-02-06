@@ -2,9 +2,31 @@ from tkinter import *
 from tkinter import messagebox
 from PIL import ImageTk
 import pymysql
+import verification as vf
 # Functionality Part
 
+
+
 def forgot_pass():
+    def  generate_OTP():
+        if userentry.get()=='' or newpassword_entry.get()=='' or confirmpass_entry.get()=='':
+            messagebox.showerror('Error','All Fields are required',parent=window)
+        elif newpassword_entry.get()!=confirmpass_entry.get():
+            messagebox.showerror('Error','Password and confirm password mismatch!',parent=window)
+        else:
+            con=pymysql.connect(host='localhost',user='root',password='12345',database='userdata')
+            mycursor=con.cursor()
+            query='select * from data where username=%s'
+            mycursor.execute(query,(userentry.get()))
+            row=mycursor.fetchone()
+            if row==None:
+                messagebox.showerror('Error','Incorrect username',parent=window)
+            else:
+                query='select email from data where username=%s'
+                mycursor.execute(query,(userentry.get()))
+                row=mycursor.fetchone()
+                vf.generate(row[0])
+
     def change_password():
         if userentry.get()=='' or newpassword_entry.get()=='' or confirmpass_entry.get()=='':
             messagebox.showerror('Error','All Fields are required',parent=window)
@@ -19,12 +41,19 @@ def forgot_pass():
             if row==None:
                 messagebox.showerror('Error','Incorrect username',parent=window)
             else:
-                query='update data set password=%s where username=%s'
-                mycursor.execute(query,(newpassword_entry.get(),userentry.get()))
-                con.commit()
-                con.close()
-                messagebox.showinfo('Success','Password is reset, Please login with new password',parent=window)
-                window.destroy()
+                OTP=otpentry.get()
+                verify=vf.verification(OTP)
+                if verify:
+                    query='update data set password=%s where username=%s'
+                    mycursor.execute(query,(newpassword_entry.get(),userentry.get()))
+                    con.commit()
+                    con.close()
+                    messagebox.showinfo('Success','Password is reset, Please login with new password',parent=window)
+                    window.destroy()
+                else:
+                    messagebox.showerror('Error','Incorrect OTP ',parent=window)
+                    window.destroy()
+                
     window=Toplevel()
     window.title('Change Password')
     
@@ -54,8 +83,19 @@ def forgot_pass():
     confirmpass_entry.place(x=470,y=320)
     Frame(window,width=250,height=2,bg='orchid1').place(x=470,y=340)
     
-    submitbutton=Button(window,text='Submit',bd=0,bg='magenta2',fg='white',font=('Open Sans',16,'bold'),width=19,cursor='hand2',activebackground='magenta2',activeforeground='white',command=change_password)
-    submitbutton.place(x=470,y=390)
+    otplabel=Label(window,text='Enter OTP',font=('arial',12,'bold'),bg='white',fg='orchid1')
+    otplabel.place(x=470,y=370)
+    otpentry=Entry(window, width=25,fg='magenta2',font=('arial',11,'bold'),bd=0)
+    otpentry.place(x=470,y=400)
+    Frame(window,width=250,height=2,bg='orchid1').place(x=470,y=420)
+
+    generateOTP=Button(window,text='Generate OTP',bd=0,bg='magenta2',fg='white',font=('Open Sans',9,'bold'),width=11,cursor='hand2',
+            activebackground='magenta2',activeforeground='white',command=generate_OTP)
+    generateOTP.place(x=645,y=390)
+    
+    submitbutton=Button(window,text='Submit',bd=0,bg='magenta2',fg='white',font=('Open Sans',16,'bold'),width=19,cursor='hand2',
+            activebackground='magenta2',activeforeground='white',command=change_password)
+    submitbutton.place(x=475,y=440)
     
     window.mainloop()
 
